@@ -39,8 +39,16 @@ namespace ListClass
         }
         private void BtnAddPreparate_Click(object sender, RoutedEventArgs e)
         {
-            if(mode == 0)
+           if( int.Parse(TxbCount.Text) < 0)
             {
+                MessageBox.Show("Количество не может быть отрицательным!", "Ошибка", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                TxbCount.Clear();
+                TxbCount.Focus();
+                return;
+            }
+            if (mode == 0)
+            {//добавление данных
                 try
                     {
                            Pharmacy pharmacy = new Pharmacy()
@@ -50,6 +58,7 @@ namespace ListClass
                                     PricePreparate = double.Parse(TxbPrice.Text),
                                     MonthPreparate = int.Parse(TxbMonth.Text)
                                 };
+
                                 ConnectHelper.pharmacies.Add(pharmacy);
                     }
                 catch(Exception ex)
@@ -60,6 +69,7 @@ namespace ListClass
                 }
                 
             }
+            //редактирование
             else
             {
                 try

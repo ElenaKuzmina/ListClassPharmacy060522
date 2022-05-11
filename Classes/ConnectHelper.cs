@@ -13,7 +13,9 @@ namespace ListClass.Classes
     class ConnectHelper
     {
         public static List<Pharmacy> pharmacies = new List<Pharmacy>();
+
         public static string fileName;
+
         public static void ReadListFromFile(string filename)
         {
             try
