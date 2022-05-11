@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows;
 
 namespace ListClass.Classes
 {/// <summary>
@@ -12,21 +13,30 @@ namespace ListClass.Classes
     class ConnectHelper
     {
         public static List<Pharmacy> pharmacies = new List<Pharmacy>();
+        public static string fileName;
         public static void ReadListFromFile(string filename)
         {
-            StreamReader streamReader = new StreamReader(filename, Encoding.UTF8);
-            while (!streamReader.EndOfStream)
+            try
             {
-                string line = streamReader.ReadLine();
-                string[] items = line.Split(';');
-                Pharmacy pharmacy = new Pharmacy()
+                StreamReader streamReader = new StreamReader(filename, Encoding.UTF8);
+                while (!streamReader.EndOfStream)
                 {
-                    NamePreparate = items[0].Trim(),
-                    CountPreparate = int.Parse(items[1].Trim()),
-                    PricePreparate = double.Parse(items[2].Trim()),
-                    MonthPreparate = int.Parse(items[3].Trim())
-                };
-                pharmacies.Add(pharmacy);
+                    string line = streamReader.ReadLine();
+                    string[] items = line.Split(';');
+                    Pharmacy pharmacy = new Pharmacy()
+                    {
+                        NamePreparate = items[0].Trim(),
+                        CountPreparate = int.Parse(items[1].Trim()),
+                        PricePreparate = double.Parse(items[2].Trim()),
+                        MonthPreparate = int.Parse(items[3].Trim())
+                    };
+                    pharmacies.Add(pharmacy);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Неверный формат данных!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
         }
         public static void SaveListToFile(string filename)

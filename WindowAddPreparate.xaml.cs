@@ -84,7 +84,7 @@ namespace ListClass
                 
 
             }
-            ConnectHelper.SaveListToFile(@"ListPreparates.txt");
+            ConnectHelper.SaveListToFile(ConnectHelper.fileName);
             this.Close();
         }
     }

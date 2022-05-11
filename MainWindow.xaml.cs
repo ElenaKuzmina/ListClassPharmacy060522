@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ListClass.Classes;
 using System.IO;
+using Microsoft.Win32;
 
 namespace ListClass
 {
@@ -26,14 +27,11 @@ namespace ListClass
         public MainWindow()
         {
             InitializeComponent();
-            //загрузка данных из файла
-            ConnectHelper.ReadListFromFile(@"ListPreparates.txt");
             
-            DtgListPreparate.ItemsSource = ConnectHelper.pharmacies;
            
         }
         /// <summary>
-        /// 
+        /// вывод всех препаратов
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -42,8 +40,11 @@ namespace ListClass
             DtgListPreparate.ItemsSource = ConnectHelper.pharmacies.ToList();
             DtgListPreparate.SelectedIndex = -1;
             //препарат с максимальной ценой
-            double pr = ConnectHelper.pharmacies.Max(x => x.PricePreparate);
-            TxbMaxPrice.Text = ConnectHelper.pharmacies.First(x => x.PricePreparate == pr).NamePreparate.ToString();
+            double prMax = ConnectHelper.pharmacies.Max(x => x.PricePreparate);
+            TxbMaxPrice.Text = ConnectHelper.pharmacies.First(x => x.PricePreparate == prMax).NamePreparate.ToString();
+            //препарат с минимальной ценой
+            double prMin = ConnectHelper.pharmacies.Min(x => x.PricePreparate);
+            TxbMinPrice.Text = ConnectHelper.pharmacies.First(x => x.PricePreparate == prMin).NamePreparate.ToString();
         }
         /// <summary>
         /// сортировка по алфавиту
@@ -138,11 +139,45 @@ namespace ListClass
                 int ind = DtgListPreparate.SelectedIndex;
                 ConnectHelper.pharmacies.RemoveAt(ind);
                 DtgListPreparate.ItemsSource = ConnectHelper.pharmacies.ToList();
-                ConnectHelper.SaveListToFile(@"ListPreparates.txt");
+                ConnectHelper.SaveListToFile(ConnectHelper.fileName);
             }
             
         }
+        /// <summary>
+        /// сохранить как
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if ((bool)saveFileDialog.ShowDialog())
+            {
+                string file = saveFileDialog.FileName;
+                ConnectHelper.SaveListToFile(file);
+            }
+        }
+        /// <summary>
+        /// открыть файл
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            //загрузка данных из файла
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                // получаем выбранный файл
+                ConnectHelper.fileName = openFileDialog.FileName;
+                ConnectHelper.ReadListFromFile(ConnectHelper.fileName);
+                //ConnectHelper.ReadListFromFile(@"ListPreparates.txt");
+            }
+            else
+                return;
 
-      
+
+            DtgListPreparate.ItemsSource = ConnectHelper.pharmacies.ToList();
+        }
     }
 }

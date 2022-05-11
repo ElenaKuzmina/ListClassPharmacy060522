@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListClass"
         mc:Ignorable="d"
-        Title="Аптечный склад" Height="450" Width="800">
+        Title="Аптечный склад" Height="550" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -40,6 +40,18 @@
                     Width="130"
                     Height="30"
                     Content="Очистить"
+                    Margin="5"/>
+            <Button Name="BtnOpen"
+                    Click="BtnOpen_Click"
+                    Width="130"
+                    Height="30"
+                    Content="Открыть"
+                    Margin="5"/>
+            <Button Name="BtnSave"
+                    Click="BtnSave_Click"
+                    Width="130"
+                    Height="30"
+                    Content="Сохранить как"
                     Margin="5"/>
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Center"
